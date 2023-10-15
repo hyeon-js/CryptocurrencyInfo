@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
                 String[] names = new String[coins.size()];
                 for (int n = 0; n < coins.size(); n++) {
                     Pair<String, String> coin = coins.get(n);
-                    names[n] = coin.first + " (" + coin.second + ")";
+                    names[n] = coin.first + " (" + coin.second.split("-")[1] + ")";
                 }
                 layout.removeAllViews();
                 ListView list = new ListView(this);
