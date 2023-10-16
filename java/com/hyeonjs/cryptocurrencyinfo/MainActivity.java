@@ -17,6 +17,7 @@ import com.hyeonjs.library.HttpRequester;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -83,8 +84,19 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadCoinInfo(CoinInfo coin) {
-
+    private void loadCoinInfo(final CoinInfo coin) {
+        try {
+            String url = "https://api.upbit.com/v1/ticker?markets=" + coin.mark;
+            String json = HttpRequester.create(url).get();
+            JSONObject data = new JSONArray(json).getJSONObject(0);
+            DecimalFormat df = new DecimalFormat("###.###");
+            String result = "현재 시세 : " + df.format(data.getLong("trade_price")) + "\n" +
+                    "등락률 : " + (data.getString("change").equals("RISE") ? "+" : "-") +
+                    Math.round(data.getDouble("change_rate") * 10000.0) / 100.0 + "%";
+            toast(result);
+        } catch (Exception e) {
+            toast(e.toString());
+        }
     }
 
     private void toast(final String msg) {
