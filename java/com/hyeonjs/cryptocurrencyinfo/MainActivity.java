@@ -1,6 +1,7 @@
 package com.hyeonjs.cryptocurrencyinfo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
@@ -75,7 +76,7 @@ public class MainActivity extends Activity {
                 ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names);
                 list.setAdapter(adapter);
                 list.setOnItemClickListener((adapterView, view, pos, id) -> {
-                    new Thread(() -> loadCoinInfo(coins.get((int) id))).start();
+                    new Thread(() -> showCoinInfo(coins.get((int) id))).start();
                 });
                 layout.addView(list);
             });
@@ -84,16 +85,22 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadCoinInfo(final CoinInfo coin) {
+    private void showCoinInfo(final CoinInfo coin) {
         try {
             String url = "https://api.upbit.com/v1/ticker?markets=" + coin.mark;
             String json = HttpRequester.create(url).get();
             JSONObject data = new JSONArray(json).getJSONObject(0);
             DecimalFormat df = new DecimalFormat("###.###");
-            String result = "현재 시세 : " + df.format(data.getLong("trade_price")) + "\n" +
+            final String result = "현재 시세 : " + df.format(data.getLong("trade_price")) + "\n" +
                     "등락률 : " + (data.getString("change").equals("RISE") ? "+" : "-") +
                     Math.round(data.getDouble("change_rate") * 10000.0) / 100.0 + "%";
-            toast(result);
+            runOnUiThread(() -> {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle(coin.name);
+                dialog.setMessage(result);
+                dialog.setNegativeButton("닫기", null);
+                dialog.show();
+            });
         } catch (Exception e) {
             toast(e.toString());
         }
