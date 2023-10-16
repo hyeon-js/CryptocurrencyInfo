@@ -79,6 +79,8 @@ public class MainActivity extends Activity {
                     new Thread(() -> showCoinInfo(coins.get((int) id))).start();
                 });
                 layout.addView(list);
+                int pad = dip2px(16);
+                list.setPadding(pad, pad, pad, pad);
             });
         } catch (Exception e) {
             toast(e.toString());
