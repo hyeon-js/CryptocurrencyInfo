@@ -58,7 +58,8 @@ public class MainActivity extends Activity {
             for (int n = 0; n < data.length(); n++) {
                 JSONObject datum = data.getJSONObject(n);
                 String mark = datum.getString("market");
-                if (mark.startsWith("KRW-")) coins.add(new Pair<>(datum.getString("korean_name"), mark));
+                if (mark.startsWith("KRW-"))
+                    coins.add(new Pair<>(datum.getString("korean_name"), mark));
             }
             runOnUiThread(() -> {
                 String[] names = new String[coins.size()];
@@ -71,13 +72,17 @@ public class MainActivity extends Activity {
                 ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names);
                 list.setAdapter(adapter);
                 list.setOnItemClickListener((adapterView, view, pos, id) -> {
-                    //show coin info
+                    new Thread(() -> loadCoinInfo(coins.get((int) id))).start();
                 });
                 layout.addView(list);
             });
         } catch (Exception e) {
             toast(e.toString());
         }
+    }
+
+    private void loadCoinInfo(Pair<String, String> coin) {
+
     }
 
     private void toast(final String msg) {
