@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends Activity {
 
@@ -53,19 +54,20 @@ public class MainActivity extends Activity {
         try {
             String url = "https://api.upbit.com/v1/market/all";
             String json = HttpRequester.create(url).get();
-            final ArrayList<Pair<String, String>> coins = new ArrayList<>();
+            final ArrayList<CoinInfo> coins = new ArrayList<>();
             JSONArray data = new JSONArray(json);
             for (int n = 0; n < data.length(); n++) {
                 JSONObject datum = data.getJSONObject(n);
                 String mark = datum.getString("market");
                 if (mark.startsWith("KRW-"))
-                    coins.add(new Pair<>(datum.getString("korean_name"), mark));
+                    coins.add(new CoinInfo(datum.getString("korean_name"), mark));
             }
+            Collections.shuffle(coins);
             runOnUiThread(() -> {
                 String[] names = new String[coins.size()];
                 for (int n = 0; n < coins.size(); n++) {
-                    Pair<String, String> coin = coins.get(n);
-                    names[n] = coin.first + " (" + coin.second.split("-")[1] + ")";
+                    CoinInfo coin = coins.get(n);
+                    names[n] = coin.name + " (" + coin.mark.split("-")[1] + ")";
                 }
                 layout.removeAllViews();
                 ListView list = new ListView(this);
@@ -81,7 +83,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadCoinInfo(Pair<String, String> coin) {
+    private void loadCoinInfo(CoinInfo coin) {
 
     }
 
