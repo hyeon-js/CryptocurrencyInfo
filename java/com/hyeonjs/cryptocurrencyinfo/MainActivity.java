@@ -2,6 +2,7 @@ package com.hyeonjs.cryptocurrencyinfo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        startActivity(new Intent(this, InfoActivity.class));
         return super.onOptionsItemSelected(item);
     }
 
