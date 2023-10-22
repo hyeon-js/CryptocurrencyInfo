@@ -17,6 +17,7 @@ public class InfoActivity extends Activity {
 
         TextView info = new TextView(this);
         info.setText("업비트에서 코인 시세 정보를 받아와서 보여주는 앱이에요.");
+        info.setTextSize(17);
         layout.addView(info);
 
         int pad = dip2px(16);
