@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class InfoActivity extends Activity {
@@ -14,6 +15,9 @@ public class InfoActivity extends Activity {
         final LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(1);
 
+        TextView info = new TextView(this);
+        info.setText("업비트에서 코인 시세 정보를 받아와서 보여주는 앱이에요.");
+        layout.addView(info);
 
         int pad = dip2px(16);
         layout.setPadding(pad, pad, pad, pad);
