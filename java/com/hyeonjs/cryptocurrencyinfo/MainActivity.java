@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.Gravity;
@@ -29,13 +30,22 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        startActivity(new Intent(this, InfoActivity.class));
+        switch(item.getItemId()) {
+            case 0:
+                startActivity(new Intent(this, InfoActivity.class));
+                break;
+            case 1:
+                Uri uri = Uri.parse("https://github.com/hyeon-js/CryptocurrencyInfo");
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, 0, 0, "앱 정보");
+        menu.add(0, 1, 0, "깃허브");
         return true;
     }
 
